@@ -12,9 +12,13 @@ def count_primes_efficient(limit):
 
 if __name__ == "__main__":
     LIMIT = 2000000 
-    print(f"Calculando primos hasta {LIMIT} de forma eficiente (Criba)...")
+    ITERATIONS = 100
+    print(f"Calculando primos hasta {LIMIT} ({ITERATIONS} veces)...")
     start = time.time()
-    result = count_primes_efficient(LIMIT)
-    end = time.time()
-    print(f"Encontrados {result} primos en {end - start:.2f} segundos.")
     
+    for _ in range(ITERATIONS):
+        result = count_primes_efficient(LIMIT)
+        
+    end = time.time()
+    print(f"Encontrados {result} primos.")
+    print(f"Tiempo total para {ITERATIONS} iteraciones: {end - start:.2f} segundos.")
