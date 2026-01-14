@@ -14,17 +14,25 @@ jobs:
         with:
           python-version: '3.10'
 
-      # 1 INICIALIZAR ECO-CI (Corregido a start-measurement)
+      # 1. INICIALIZAR EL MONITOR
       - name: Initialize ECO-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: start-measurement
 
-      # 2 EJECUTAR EL SCRIPT
+      # 2. EJECUTAR EL SCRIPT (Tu algoritmo ineficiente)
       - name: Execute Script
         run: python primes.py
 
-      # 3 MOSTRAR RESULTADOS
+      # 3. CAPTURAR LA MEDICIÓN (Paso crucial que faltaba)
+      # Esto crea el "snapshot" de energía consumida por el paso anterior.
+      - name: Get Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: 'Ejecución Algoritmo Primos'
+
+      # 4. MOSTRAR RESULTADOS
       - name: Finalize and Display Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
