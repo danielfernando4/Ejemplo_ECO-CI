@@ -1,0 +1,31 @@
+name: ECO-CI Energy Measurement
+
+on: [push]
+
+jobs:
+  measure-energy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # Inicializar ECO-CI
+      - name: Initialize ECO-CI
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: start
+
+      # Ejecutar el script (primes.py)
+      - name: Execute Script
+        run: python primes.py
+
+      # Mostrar resultados en el Summary del Job
+      - name: Finalize and Display Results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: display-results
