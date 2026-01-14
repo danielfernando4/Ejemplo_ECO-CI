@@ -10,7 +10,6 @@ def count_primes_efficient(limit):
         p += 1
     return sum(1 for p in range(2, limit + 1) if primes[p])
 
-
 if __name__ == "__main__":
     LIMIT = 2000000 
     ITERATIONS = 50
