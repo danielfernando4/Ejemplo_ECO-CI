@@ -40,3 +40,21 @@ jobs:
           send-data: true               
           project: 'primos-energy-only' 
           display-table: true          
+
+          # 5. VALIDACIÓN DEL PRESUPUESTO ENERGÉTICO
+      - name: Check Energy Budget
+        run: |
+          # Extraer el valor de energía del archivo generado por ECO-CI
+          ENERGY=$(jq '.total_energy' total-energy.json)
+          LIMIT=60
+          
+          echo "Energía Total Consumida: $ENERGY Joules"
+          
+          # Comparación de punto flotante usando 'bc'
+          if (( $(echo "$ENERGY > $LIMIT" | bc -l) )); then
+            echo "ERROR: El consumo energético ($ENERGY J) supera el límite de $LIMIT J."
+            echo "Por favor, optimiza el código antes de hacer merge."
+            exit 1
+          else
+            echo "ÉXITO: El consumo ($ENERGY J) está dentro del presupuesto verde."
+          fi
