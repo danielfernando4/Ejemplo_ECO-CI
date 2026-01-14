@@ -1,4 +1,4 @@
-name: ECO-CI Energy Measurement (No-API Mode)
+name: Green Energy Budget (60 Joules Limit)
 
 on: [push]
 
@@ -14,46 +14,45 @@ jobs:
         with:
           python-version: '3.10'
 
-      # 1. INICIALIZAR MONITOR
+      # 1. INICIALIZAR MONITORIZACIÓN
       - name: Initialize ECO-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: start-measurement
 
-      # 2. EJECUTAR TU SCRIPT (primes.py)
+      # 2. EJECUTAR EL SCRIPT
       - name: Execute Script
         run: python primes.py
 
-      # 3. CAPTURAR MÉTRICAS DE ENERGÍA
+      # 3. CAPTURAR DATOS DE LA EJECUCIÓN
       - name: Get Measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
           label: 'Calculo de Primos'
 
-      # 4. MOSTRAR REPORTE Y GENERAR ARCHIVO JSON
+      # 4. FINALIZAR Y EXPORTAR
       - name: Finalize and Display Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
           calculate-co2: false
-          send-data: true
-          project: 'primos-energy-only'
-          display-table: true
           json-output: true 
+          project: 'primos-energy-budget'
+          send-data: true
 
-      # 5. VALIDACIÓN DEL PRESUPUESTO (60 JOULES)
+      # 5. CONTROL DE CALIDAD VERDE
       - name: Check Energy Budget
         run: |
           ENERGY=$(jq '.total_energy' total-energy.json)
           LIMIT=60
           
-          echo "Energía Total: $ENERGY Joules"
+          echo "Consumo medido: $ENERGY Joules"
+          echo "Limite permitido: $LIMIT Joules"
           
-          # Comparamos usando 'bc' para manejar decimales
           if (( $(echo "$ENERGY > $LIMIT" | bc -l) )); then
-            echo "ERROR: Consumo de $ENERGY J supera el límite de $LIMIT J."
-            exit 1
+            echo "ERROR: El consumo de $ENERGY J supera el presupuesto de $LIMIT J"
+            exit 1 
           else
-            echo "ÉXITO: Consumo de $ENERGY J dentro del límite."
+            echo "EXITO: Codigo eficiente dentro de los parametros"
           fi
