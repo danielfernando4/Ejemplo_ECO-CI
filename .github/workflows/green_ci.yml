@@ -28,9 +28,10 @@ jobs:
           task: get-measurement
           label: 'Ejecución Algoritmo Primos'
 
-      # AQUÍ ESTÁ EL CAMBIO CLAVE
       - name: Finalize and Display Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
-          api_token: ${{ secrets.ELECTRICITY_MAPS_TOKEN }} # Llama al secreto que creaste
+          api_token: ${{ secrets.ELECTRICITY_MAPS_TOKEN }}
+          data_provider: 'electricitymaps'
+          project_name: 'primes-optimization-ecuador'
