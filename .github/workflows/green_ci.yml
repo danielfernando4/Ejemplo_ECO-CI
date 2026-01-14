@@ -14,17 +14,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      # Inicializar ECO-CI
+      # 1 INICIALIZAR ECO-CI (Corregido a start-measurement)
       - name: Initialize ECO-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
-          task: start
+          task: start-measurement
 
-      # Ejecutar el script (primes.py)
+      # 2 EJECUTAR EL SCRIPT
       - name: Execute Script
         run: python primes.py
 
-      # Mostrar resultados en el Summary del Job
+      # 3 MOSTRAR RESULTADOS
       - name: Finalize and Display Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
