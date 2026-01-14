@@ -19,6 +19,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: start-measurement
+          calculate-co2: false
 
       # 2. EJECUTAR EL SCRIPT
       - name: Execute Script
@@ -30,6 +31,7 @@ jobs:
         with:
           task: get-measurement
           label: 'Calculo de Primos'
+          calculate-co2: false
 
       # 4. FINALIZAR Y EXPORTAR
       - name: Finalize and Display Results
@@ -38,8 +40,8 @@ jobs:
           task: display-results
           calculate-co2: false
           json-output: true 
-          project: 'primos-energy-budget'
-          send-data: true
+          send-data: false
+          display-table: true
 
       # 5. CONTROL DE CALIDAD VERDE
       - name: Check Energy Budget
