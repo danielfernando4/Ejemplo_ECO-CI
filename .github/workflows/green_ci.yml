@@ -32,6 +32,6 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
-          api_token: ${{ secrets.ELECTRICITY_MAPS_TOKEN }}
-          data_provider: 'electricitymaps'
-          project_name: 'primes-optimization-ecuador'
+          electricitymaps-api-token: ${{ secrets.ELECTRICITY_MAPS_TOKEN }}
+          project: 'mi-algoritmo-de-primos'
+          send-data: true
