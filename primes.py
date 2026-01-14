@@ -12,7 +12,7 @@ def count_primes_efficient(limit):
 
 if __name__ == "__main__":
     LIMIT = 2000000 
-    ITERATIONS = 100
+    ITERATIONS = 50
     print(f"Calculando primos hasta {LIMIT} ({ITERATIONS} veces)...")
     start = time.time()
     
