@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      # 1. INICIALIZAR MONITORIZACIÓN
+      # 1. INICIALIZAR MONITORIZACION
       - name: Initialize ECO-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
@@ -25,7 +25,7 @@ jobs:
       - name: Execute Script
         run: python primes.py
 
-      # 3. CAPTURAR DATOS DE LA EJECUCIÓN
+      # 3. CAPTURAR DATOS DE LA EJECUCION
       - name: Get Measurement
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
@@ -33,24 +33,28 @@ jobs:
           label: 'Calculo de Primos'
           calculate-co2: false
 
-      # 4. FINALIZAR Y EXPORTAR
+      # 4. FINALIZAR Y MOSTRAR TABLA
       - name: Finalize and Display Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
           calculate-co2: false
-          json-output: true 
           send-data: false
           display-table: true
 
-      # 5. CONTROL DE CALIDAD VERDE
+      # 5. CONTROL DE CALIDAD VERDE (METODO DE EXTRACCION DIRECTA)
       - name: Check Energy Budget
         run: |
-          ENERGY=$(jq '.total_energy' total-energy.json)
+          ENERGY=$(grep "Total Run" $GITHUB_STEP_SUMMARY | cut -d'|' -f4 | xargs)
           LIMIT=60
           
-          echo "Consumo medido: $ENERGY Joules"
-          echo "Limite permitido: $LIMIT Joules"
+          echo "Consumo extraido del resumen: $ENERGY Joules"
+          echo "Limite maximo: $LIMIT Joules"
+          
+          if [ -z "$ENERGY" ]; then
+            echo "ERROR: No se pudo encontrar el dato de energia en el resumen"
+            exit 1
+          fi
           
           if (( $(echo "$ENERGY > $LIMIT" | bc -l) )); then
             echo "ERROR: El consumo de $ENERGY J supera el presupuesto de $LIMIT J"
