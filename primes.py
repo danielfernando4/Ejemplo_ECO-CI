@@ -1,22 +1,20 @@
 import time
 
-def count_primes_inefficient(limit):
-    count = 0
-    for num in range(2, limit):
-        is_prime = True
-        for i in range(2, num): 
-            if num % i == 0:
-                is_prime = False
-                break
-        if is_prime:
-            count += 1
-    return count
-
+def count_primes_efficient(limit):
+    primes = [True] * (limit + 1)
+    p = 2
+    while (p * p <= limit):
+        if (primes[p] == True):
+            for i in range(p * p, limit + 1, p):
+                primes[i] = False
+        p += 1
+    return sum(1 for p in range(2, limit + 1) if primes[p])
 
 if __name__ == "__main__":
-    LIMIT = 100000 
-    print(f"--- baseline: Calculando hasta {LIMIT} ---")
+    LIMIT = 2000000 
+    print(f"Calculando primos hasta {LIMIT} de forma eficiente (Criba)...")
     start = time.time()
-    result = count_primes_inefficient(LIMIT)
+    result = count_primes_efficient(LIMIT)
     end = time.time()
-    print(f"Resultado: {result} primos encontrados en {end - start:.2f} segundos.")
+    print(f"Encontrados {result} primos en {end - start:.2f} segundos.")
+    
