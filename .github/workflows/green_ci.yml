@@ -33,27 +33,27 @@ jobs:
           label: 'Calculo de Primos'
           calculate-co2: false
 
-      # 4. FINALIZAR Y GENERAR OUTPUTS
+      # 4. FINALIZAR Y MOSTRAR TABLA
       - name: Finalize and Display Results
-        id: eco_results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
           calculate-co2: false
           send-data: false
           display-table: true
+          json-output: true
 
       # 5. CONTROL DE CALIDAD VERDE
       - name: Check Energy Budget
         run: |
-          ENERGY=${{ steps.eco_results.outputs.data-total-energy }}
+          ENERGY=$(grep "Total Run" /tmp/eco-ci/output.txt | cut -d'|' -f4 | xargs)
           LIMIT=60
           
-          echo "Consumo detectado desde outputs: $ENERGY Joules"
+          echo "Consumo detectado: $ENERGY Joules"
           echo "Limite permitido: $LIMIT Joules"
           
-          if [ -z "$ENERGY" ] || [ "$ENERGY" == "null" ]; then
-            echo "ERROR: El valor de energia no fue capturado correctamente"
+          if [ -z "$ENERGY" ]; then
+            echo "ERROR: No se pudo capturar el dato de energia de la tabla"
             exit 1
           fi
           
