@@ -12,6 +12,7 @@ def count_primes_inefficient(limit):
             count += 1
     return count
 
+
 if __name__ == "__main__":
     LIMIT = 100000 
     print(f"--- baseline: Calculando hasta {LIMIT} ---")
