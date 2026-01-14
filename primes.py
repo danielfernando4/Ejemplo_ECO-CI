@@ -1,25 +1,21 @@
 import time
 
-def count_primes_efficient(limit):
-    primes = [True] * (limit + 1)
-    p = 2
-    while (p * p <= limit):
-        if (primes[p] == True):
-            for i in range(p * p, limit + 1, p):
-                primes[i] = False
-        p += 1
-    return sum(1 for p in range(2, limit + 1) if primes[p])
-
+def count_primes_inefficient(limit):
+    count = 0
+    for num in range(2, limit):
+        is_prime = True
+        for i in range(2, num): # Muy ineficiente: divide por cada número
+            if num % i == 0:
+                is_prime = False
+                break
+        if is_prime:
+            count += 1
+    return count
 
 if __name__ == "__main__":
-    LIMIT = 2000000 
-    ITERATIONS = 50
-    print(f"Calculando primos hasta {LIMIT} ({ITERATIONS} veces)...")
+    LIMIT = 100000 # Límite menor porque O(N^2) es extremadamente lento
+    print(f"Calculando primos hasta {LIMIT} de forma ineficiente...")
     start = time.time()
-    
-    for _ in range(ITERATIONS):
-        result = count_primes_efficient(LIMIT)
-        
+    result = count_primes_inefficient(LIMIT)
     end = time.time()
-    print(f"Encontrados {result} primos.")
-    print(f"Tiempo total para {ITERATIONS} iteraciones: {end - start:.2f} segundos.")
+    print(f"Encontrados {result} primos en {end - start:.2f} segundos.")
