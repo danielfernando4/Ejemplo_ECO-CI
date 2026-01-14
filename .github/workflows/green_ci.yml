@@ -33,8 +33,9 @@ jobs:
           label: 'Calculo de Primos'
           calculate-co2: false
 
-      # 4. FINALIZAR Y MOSTRAR TABLA
+      # 4. FINALIZAR Y GENERAR OUTPUTS
       - name: Finalize and Display Results
+        id: eco_results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
@@ -42,17 +43,17 @@ jobs:
           send-data: false
           display-table: true
 
-      # 5. CONTROL DE CALIDAD VERDE (METODO DE EXTRACCION DIRECTA)
+      # 5. CONTROL DE CALIDAD VERDE
       - name: Check Energy Budget
         run: |
-          ENERGY=$(grep "Total Run" $GITHUB_STEP_SUMMARY | cut -d'|' -f4 | xargs)
+          ENERGY=${{ steps.eco_results.outputs.data-total-energy }}
           LIMIT=60
           
-          echo "Consumo extraido del resumen: $ENERGY Joules"
-          echo "Limite maximo: $LIMIT Joules"
+          echo "Consumo detectado desde outputs: $ENERGY Joules"
+          echo "Limite permitido: $LIMIT Joules"
           
-          if [ -z "$ENERGY" ]; then
-            echo "ERROR: No se pudo encontrar el dato de energia en el resumen"
+          if [ -z "$ENERGY" ] || [ "$ENERGY" == "null" ]; then
+            echo "ERROR: El valor de energia no fue capturado correctamente"
             exit 1
           fi
           
