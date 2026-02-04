@@ -1,0 +1,42 @@
+name: ECO-CI Energy Measurement (No-API Mode)
+
+on: [push]
+
+jobs:
+  measure-energy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 1. INICIALIZAR MONITOR
+      - name: Initialize ECO-CI
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: start-measurement
+
+      # 2. EJECUTAR TU SCRIPT (primes.py)
+      - name: Execute Script
+        run: python primes.py
+
+      # 3. CAPTURAR MÉTRICAS DE ENERGÍA
+      - name: Get Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: 'Calculo de Primos'
+
+      # 4. MOSTRAR REPORTE DE HARDWARE
+      - name: Finalize and Display Results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: display-results
+          calculate-co2: false
+          send-data: true
+          project: 'primos-energy-only'
+          display-table: true

@@ -1,0 +1,65 @@
+name: Green Energy Budget (60 Joules Limit)
+
+on: [push]
+
+jobs:
+  measure-energy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 1. INICIALIZAR MONITORIZACION
+      - name: Initialize ECO-CI
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: start-measurement
+          calculate-co2: false
+
+      # 2. EJECUTAR EL SCRIPT
+      - name: Execute Script
+        run: python primes.py
+
+      # 3. CAPTURAR DATOS DE LA EJECUCION
+      - name: Get Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: 'Calculo de Primos'
+          calculate-co2: false
+
+      # 4. FINALIZAR Y MOSTRAR TABLA
+      - name: Finalize and Display Results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: display-results
+          calculate-co2: false
+          send-data: false
+          display-table: true
+          json-output: true
+
+      # 5. CONTROL DE CALIDAD VERDE
+      - name: Check Energy Budget
+        run: |
+          ENERGY=$(grep "Total Run" /tmp/eco-ci/output.txt | cut -d'|' -f4 | xargs)
+          LIMIT=60
+          
+          echo "Consumo detectado: $ENERGY Joules"
+          echo "Limite permitido: $LIMIT Joules"
+          
+          if [ -z "$ENERGY" ]; then
+            echo "ERROR: No se pudo capturar el dato de energia de la tabla"
+            exit 1
+          fi
+          
+          if (( $(echo "$ENERGY > $LIMIT" | bc -l) )); then
+            echo "ERROR: El consumo de $ENERGY J supera el presupuesto de $LIMIT J"
+            exit 1 
+          else
+            echo "EXITO: Codigo eficiente dentro de los parametros"
+          fi
