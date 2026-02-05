@@ -1,9 +1,37 @@
 # Ejemplo_ECO-CI
 
-El siguiente ejemplo busca comparar el impácto entro dos algoritmos (uno eficiente y el otro ineficiente) para encontrar todos los números primos hasta un límite determinado.
-En el repositorio se encuentran dos archivos. Para que el ejemplo funcione se debe nombrar al archivo que se desea aplicar alguno de los 
-dos pipelines como "primes.py".
-Hay dos pipelines definidos: 
-El pipeline1 muestra una tabla con métricas para medir el consumo de harware del algoritmo específicado (utilización de la CPU, consumo de energía en Joules, potencia elétrica en Watts y duración del algoritmo.
-EL pipeline2 muestra un fallo si la energía total del Total run no es menor a 60 Joules
-<img width="322" height="99" alt="image" src="https://github.com/user-attachments/assets/a1955ffc-eca8-415a-a370-dcab775c27e2" />
+Descripción general
+
+El siguiente ejemplo busca comparar el impacto entre dos algoritmos, uno eficiente y otro ineficiente, para encontrar todos los números primos hasta un límite determinado.
+
+Contenido del repositorio
+
+En el repositorio se incluyen dos archivos, cada uno implementando un algoritmo distinto para el cálculo de números primos.
+
+Uso del ejemplo
+
+Para que el ejemplo funcione correctamente:
+
+El archivo que se desea evaluar debe renombrarse como primes.py.
+
+Dependiendo del algoritmo seleccionado, se ejecutará uno de los pipelines definidos.
+
+Pipelines disponibles
+Pipeline 1
+
+Este pipeline muestra una tabla de métricas que permite medir el consumo de hardware del algoritmo especificado.
+Las métricas evaluadas son:
+
+Utilización de la CPU
+
+Consumo de energía (en Joules)
+
+Potencia eléctrica (en Watts)
+
+Duración total del algoritmo
+
+Pipeline 2
+
+Este pipeline valida el consumo energético total del algoritmo:
+
+El pipeline falla si la energía total del Total run no es menor a 60 Joules.
